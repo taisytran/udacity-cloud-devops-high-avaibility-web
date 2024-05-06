@@ -2,13 +2,8 @@ Description: CD12352 - Infrastructure as Code Project - Udagram
 
 Parameters:
   ComponentID:
-    Description: ComponentID, using for tagging
+    Description: ComponentID, used for tagging
     Type: String
-
- # CPUUsagePercentPolicyTargetValue:
- #    Description: Average CPU utilization
- #    Type: String
- #    Default: 75.0
 
 Resources:
   WebAppSecurityGroup:
@@ -23,7 +18,6 @@ Resources:
           ToPort: 80
           CidrIp: 0.0.0.0/0
 
-  # AutoScaling Group
   WebAppLaunchTemplate:
     Type: AWS::EC2::LaunchTemplate
     Properties:
@@ -61,18 +55,9 @@ Resources:
           'Fn::Sub': "${ComponentID}-PrivateSubnet1Id"
         - !ImportValue
           'Fn::Sub': "${ComponentID}-PrivateSubnet2Id"
+      TargetGroupARNs:
+        - !Ref WebAppTargetGroup
 
-  WebServerCPUPolicy:
-    Type: AWS::AutoScaling::ScalingPolicy
-    Properties:
-      AutoScalingGroupName: !Ref WebAppAutoScalingGroup
-      PolicyType: TargetTrackingScaling
-      TargetTrackingConfiguration:
-        PredefinedMetricSpecification:
-          PredefinedMetricType: ASGAverageCPUUtilization
-        TargetValue: !Ref CPUUsagePercentPolicyTargetValue
-
-  # Load Balancer
   WebAppTargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
@@ -86,9 +71,9 @@ Resources:
     Properties:
       Subnets:
         - !ImportValue
-          'Fn::Sub': "${ComponentID}-PrivateSubnet1Id"
+          'Fn::Sub': "${ComponentID}-PublicSubnet1Id"
         - !ImportValue
-          'Fn::Sub': "${ComponentID}-PrivateSubnet2Id"
+          'Fn::Sub': "${ComponentID}-PublicSubnet2Id"
       SecurityGroups:
         - !Ref WebAppSecurityGroup
 
@@ -106,4 +91,3 @@ Outputs:
   LoadBalancerDNS:
     Description: DNS Name of the Web App Load Balancer
     Value: !GetAtt WebAppLoadBalancer.DNSName
-
