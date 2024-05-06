@@ -9,15 +9,15 @@ python manage_stack.py create udagram
 
 
 # Tear down instructions
-
+```bash
 python manage_stack.py delete network
 python manage_stack.py delete udagram
-
+```
 # Other considerations
-
+```bash
 python manage_stack.py update network
 python manage_stack.py update udagram
-
+```
 # TODO: 
 
 - [ ] fix issue template autoscalling not working (not clue yet)
