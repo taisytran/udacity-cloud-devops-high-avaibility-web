@@ -148,3 +148,15 @@ Outputs:
     Value: !Ref PrivateSubnet2
     Export:
       Name: { "Fn::Sub": "${ComponentID}-PrivateSubnet2Id" }
+
+  PublicSubnet1Id:
+    Description: "First Public subnet ID"
+    Value: !Ref PublicSubnet1
+    Export:
+      Name: { "Fn::Sub": "${ComponentID}-PublicSubnet1Id" }
+
+  PublicSubnet2Id:
+    Description: "Second Public subnet ID"
+    Value: !Ref PublicSubnet2
+    Export:
+      Name: { "Fn::Sub": "${ComponentID}-PublicSubnet2Id" }
