@@ -1,4 +1,4 @@
-Description: CD12352 - Infrastructure as Code Project - S3 Bucket
+Description: CD12352 - Infrastructure as Code Project - S3 Bucket without ACLs
 
 Parameters:
   S3BucketName:
@@ -10,7 +10,9 @@ Resources:
     Type: AWS::S3::Bucket
     Properties:
       BucketName: !Ref S3BucketName
-      AccessControl: PublicRead
+      OwnershipControls:
+        Rules:
+          - ObjectOwnership: BucketOwnerEnforced
       WebsiteConfiguration:
         IndexDocument: index.html
         ErrorDocument: error.html
@@ -25,29 +27,6 @@ Resources:
             Principal: "*"
             Action: "s3:GetObject"
             Resource: !Sub "arn:aws:s3:::${S3BucketName}/*"
-
-  EC2Role:
-    Type: AWS::IAM::Role
-    Properties:
-      AssumeRolePolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service: "ec2.amazonaws.com"
-            Action: "sts:AssumeRole"
-      Policies:
-        - PolicyName: AccessS3BucketPolicy
-          PolicyDocument:
-            Version: '2012-10-17'
-            Statement:
-              - Effect: Allow
-                Action:
-                  - "s3:Get*"
-                  - "s3:List*"
-                  - "s3:Put*"
-                  - "s3:Delete*"
-                Resource: !Sub "arn:aws:s3:::${S3BucketName}/*"
 
 Outputs:
   S3BucketURL:
