@@ -40,6 +40,15 @@ Resources:
             systemctl start nginx
             systemctl enable nginx
             echo "<html><body><h1>it works! Udagram, Udacity</h1></body></html>" > /usr/share/nginx/html/index.html
+        NetworkInterfaces:
+          - DeviceIndex: 0
+            SubnetId: !Sub
+              - "${ComponentID}-PrivateSubnet1Id"
+              - { ComponentID: !ImportValue ComponentID }
+            AssociatePublicIpAddress: true
+            DeleteOnTermination: true
+            Groups:
+              - !Ref WebAppSecurityGroup
 
   WebAppAutoScalingGroup:
     Type: AWS::AutoScaling::AutoScalingGroup
