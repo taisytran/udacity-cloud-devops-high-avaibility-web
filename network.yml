@@ -29,7 +29,7 @@ Resources:
       EnableDnsSupport: true
       EnableDnsHostnames: true
 
-  # IGW + VPC
+  # Internet Gateway
   InternetGateway:
     Type: AWS::EC2::InternetGateway
 
@@ -39,12 +39,13 @@ Resources:
       VpcId: !Ref VPC
       InternetGatewayId: !Ref InternetGateway
 
-  # Subnets
+  # Public Subnets
   PublicSubnet1:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref VPC
       CidrBlock: !Ref PublicSubnet1Cidr
+      AvailabilityZone: !Select [0, !GetAZs '']
       MapPublicIpOnLaunch: true
 
   PublicSubnet2:
@@ -52,21 +53,25 @@ Resources:
     Properties:
       VpcId: !Ref VPC
       CidrBlock: !Ref PublicSubnet2Cidr
+      AvailabilityZone: !Select [1, !GetAZs '']
       MapPublicIpOnLaunch: true
 
+  # Private Subnets
   PrivateSubnet1:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref VPC
       CidrBlock: !Ref PrivateSubnet1Cidr
+      AvailabilityZone: !Select [0, !GetAZs '']
 
   PrivateSubnet2:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref VPC
       CidrBlock: !Ref PrivateSubnet2Cidr
+      AvailabilityZone: !Select [1, !GetAZs '']
 
-  # NGW
+  # NAT Gateway (associated with a public subnet)
   NatGateway:
     Type: AWS::EC2::NatGateway
     Properties:
