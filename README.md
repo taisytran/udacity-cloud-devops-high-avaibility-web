@@ -18,6 +18,9 @@ python manage_stack.py delete udagram
 python manage_stack.py update network
 python manage_stack.py update udagram
 ```
+
+URL: http://udagra-webap-rpexz9dyhlfw-974045387.us-east-1.elb.amazonaws.com/
+
 # TODO: 
 
 - [ ] fix issue template autoscalling not working (not clue yet)

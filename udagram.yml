@@ -57,6 +57,14 @@ Resources:
           'Fn::Sub': "${ComponentID}-PrivateSubnet2Id"
       TargetGroupARNs:
         - !Ref WebAppTargetGroup
+      HealthCheckType: "EC2"
+      HealthCheckGracePeriod: 300
+      MetricsCollection:
+        - Granularity: "1Minute"
+      Tags:
+        - Key: "Name"
+          Value: "Udagram-ASG-Instance"
+          PropagateAtLaunch: true
 
   WebAppTargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
